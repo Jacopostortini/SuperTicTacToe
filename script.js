@@ -3,11 +3,21 @@ let undoButton;
 let resetButton;
 
 function setup() {
-    createCanvas(1000, 600);
+    //Get document size from window
+    let screenWidth = window.innerWidth;
+    let screenHeight = window.innerHeight;
 
-    game = new STTT({ x: 0, y: 0, size: height });
-    undoButton = new ImageButton("undo.png", "undo_hover.png", "Undo", width - 150, 20, 50, 50);
-    resetButton = new ImageButton("reset.png", "reset_hover.png", "Reset", width - 70, 20, 50, 50);
+    createCanvas(screenWidth * 0.9, screenHeight * 0.9);
+
+    game = new STTT({ x: 0, y: 0, size: min(width, height) });
+    if (width > height) {
+        undoButton = new ImageButton("undo.png", "undo_hover.png", "Undo", width - 150, 20, 50, 50);
+        resetButton = new ImageButton("reset.png", "reset_hover.png", "Reset", width - 70, 20, 50, 50);
+    } else {
+        undoButton = new ImageButton("undo.png", "undo_hover.png", "Undo", 20, height - 90, 50, 50);
+        resetButton = new ImageButton("reset.png", "reset_hover.png", "Reset", 90, height - 90, 50, 50);
+    }
+
 
     undoButton.addOnClickListener(() => {
         game.cancelLastMove();
@@ -61,41 +71,76 @@ function mouseMoved() {
     resetButton.mouseMoved();
 }
 
-function displayInformations(){
-    
-    if(game.winner == null){
-        //Display information about who is the player
-        textSize(80);
-        textStyle(BOLD);
-        fill("#00FF00");
-        textAlign(CENTER, CENTER);
-        text(game.getPlayer(), (width+height)/2, height/2);
-        textSize(25);
-        textAlign(LEFT, BOTTOM);
-        textStyle(NORMAL);
-        fill(0);
-        text("to play", (width+height)/2+35, height/2+30)
-    } else {
-        //Display information about who won
-        if(game.winner != TTT.XO){
+function displayInformations() {
+    if (width > height) {
+
+        if (game.winner == null) {
+            //Display information about who is the player
             textSize(80);
             textStyle(BOLD);
             fill("#00FF00");
             textAlign(CENTER, CENTER);
-            text(game.getWinner(), (width+height)/2, height/2);
+            text(game.getPlayer(), (width + height) / 2, height / 2);
             textSize(25);
             textAlign(LEFT, BOTTOM);
             textStyle(NORMAL);
             fill(0);
-            text("won", (width+height)/2+35, height/2+30)
+            text("to play", (width + height) / 2 + 35, height / 2 + 30)
         } else {
+            //Display information about who won
+            if (game.winner != TTT.XO) {
+                textSize(80);
+                textStyle(BOLD);
+                fill("#00FF00");
+                textAlign(CENTER, CENTER);
+                text(game.getWinner(), (width + height) / 2, height / 2);
+                textSize(25);
+                textAlign(LEFT, BOTTOM);
+                textStyle(NORMAL);
+                fill(0);
+                text("won", (width + height) / 2 + 35, height / 2 + 30)
+            } else {
+                textSize(80);
+                textStyle(BOLD);
+                fill("#00FF00");
+                textAlign(CENTER, CENTER);
+                text(game.getWinner(), (width + height) / 2, height / 2);
+            }
+
+        }
+    } else {
+        if (game.winner == null) {
+            //Display information about who is the player
             textSize(80);
             textStyle(BOLD);
             fill("#00FF00");
-            textAlign(CENTER, CENTER);
-            text(game.getWinner(), (width+height)/2, height/2);
+            textAlign(CENTER, TOP);
+            text(game.getPlayer(), width/2, width);
+            textSize(25);
+            textAlign(LEFT, TOP);
+            textStyle(NORMAL);
+            fill(0);
+            text("to play", width / 2 + 30, width + 40);
+        } else {
+            //Display information about who won
+            if (game.winner != TTT.XO) {
+                textSize(80);
+                textStyle(BOLD);
+                fill("#00FF00");
+                textAlign(CENTER, CENTER);
+                text(game.getWinner(), (width + height) / 2, height / 2);
+                textSize(25);
+                textAlign(LEFT, BOTTOM);
+                textStyle(NORMAL);
+                fill(0);
+                text("won", (width + height) / 2 + 35, height / 2 + 30)
+            } else {
+                textSize(80);
+                textStyle(BOLD);
+                fill("#00FF00");
+                textAlign(CENTER, CENTER);
+                text(game.getWinner(), (width + height) / 2, height / 2);
+            }
         }
-
     }
 }
-
