@@ -75,10 +75,10 @@ class TTT {
     }
 
     //Display the board
-    display(size, gap){
+    display(size, gap, highlights = {game: false, pos: null}){
         const squareSize = (size-2*gap)/3;
-        strokeWeight(4);
-        stroke(0);
+        strokeWeight(min(gap/5, 5));
+        stroke(highlights.game ? '#FF0000' : '#000000');
         //Vertical lines
         line(squareSize+gap, gap, squareSize+gap, size-gap);
         line(2*squareSize+gap, gap, 2*squareSize+gap, size-gap);
@@ -90,28 +90,33 @@ class TTT {
         const signsGap = squareSize*0.1;
         for (let i = 0; i < 3; i++){
             for (let j = 0; j < 3; j++) {
+                if(highlights.pos != null && highlights.pos[0] == i && highlights.pos[1] == j){
+                    //orange lines
+                    stroke('#FFA500');
+                } else {
+                    stroke(0);
+                }
                 if (this.board[i][j] === TTT.X) {
-                    line(i*squareSize+gap+signsGap, j*squareSize+gap+signsGap, (i+1)*squareSize+gap-signsGap, (j+1)*squareSize+gap-signsGap);
-                    line((i+1)*squareSize+gap-signsGap, j*squareSize+gap+signsGap, i*squareSize+gap+signsGap, (j+1)*squareSize+gap-signsGap);
+                    line(j*squareSize+gap+signsGap, i*squareSize+gap+signsGap, (j+1)*squareSize+gap-signsGap, (i+1)*squareSize+gap-signsGap);
+                    line((j+1)*squareSize+gap-signsGap, i*squareSize+gap+signsGap, j*squareSize+gap+signsGap, (i+1)*squareSize+gap-signsGap);
                 } else if (this.board[i][j] === TTT.O) {
-                    circle((i+0.5)*squareSize+gap, (j+0.5)*squareSize+gap, squareSize-signsGap*2);
+                    noFill();
+                    circle((j+0.5)*squareSize+gap, (i+0.5)*squareSize+gap, squareSize-signsGap*2);
                 }
             }
         }
-    }
 
-    //Click listener
-    mouseClicked(boundaries, player) {
+        //If the game is over, display big symbol of the winner over the game
         if (this.winner !== null) {
-            return false;
+            strokeWeight(gap/3);
+            stroke('#0000FF');
+            noFill();
+            if (this.winner === TTT.X) {
+                line(gap, gap, size-gap, size-gap);
+                line(size-gap, gap, gap, size-gap);
+            } else if (this.winner === TTT.O) {
+                circle(size/2, size/2, size-2*gap);
+            }   
         }
-        if (mouseX > boundaries.x && mouseX < boundaries.x+boundaries.size && mouseY > boundaries.y && mouseY < boundaries.y+boundaries.size) {
-            const squareSize = boundaries.size/3;
-            const x = Math.floor((mouseX-boundaries.x)/squareSize);
-            const y = Math.floor((mouseY-boundaries.y)/squareSize);
-            return this.playMove(x, y, player);
-        }
-        return false;
     }
-
 }
