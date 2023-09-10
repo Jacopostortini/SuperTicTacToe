@@ -126,7 +126,8 @@ class STTT{
         }
 
         //play the move in the right game of the board 
-        this.board[coords.game[0]][coords.game[1]].playMove(coords.pos[0], coords.pos[1], this.turn);
+        const played = this.board[coords.game[0]][coords.game[1]].playMove(coords.pos[0], coords.pos[1], this.turn);
+        if(!played) return false;
 
         //Change turn
         if(this.turn == TTT.X){
