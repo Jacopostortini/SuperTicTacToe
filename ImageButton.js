@@ -19,7 +19,9 @@ class ImageButton {
         //Check if the click was inside the button
         if(mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h){
             if(this.click){
-                this.click();
+                for(const f of this.click){
+                    f();
+                }
             }
         }
     }
@@ -28,12 +30,16 @@ class ImageButton {
         //Check if the mouse is inside the button
         if(mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h){
             if(!this.hover && this.enter){
-                this.enter();
+                for(const f of this.enter){
+                    f();
+                }
             }   
             this.hover = true;
         } else {
             if(this.hover && this.exit){
-                this.exit();
+                for(const f of this.exit){
+                    f();
+                }
             }
             this.hover = false;
         }
@@ -53,21 +59,33 @@ class ImageButton {
     }
 
     addOnClickListener(listener) {
-        this.click = listener;
+        if(this.click) this.click.push(listener);
+        else this.click = [listener];
     }
 
     addHoverListener(listener) {
-        this.onHover = listener;
+        if(this.onHover) this.onHover.push(listener);
+        else this.onHover = [listener];
     }
 
     addOnEnterListener(listener) {
-        this.enter = listener;
+        if(this.enter) this.enter.push(listener);
+        else this.enter = [listener];
     }
 
     addOnExitListener(listener) {
-        this.exit = listener;
+        if(this.exit) this.exit.push(listener);
+        else this.exit = [listener];
     }
 
-
+    addDefaultHoverBehaviour(){
+        this.addOnEnterListener(() => {
+            this.img = this.hoverImage;
+        });
+        
+        this.addOnExitListener(() => {
+            this.img = this.normalImage;
+        });
+    }
 
 }
