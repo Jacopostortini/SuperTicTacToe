@@ -10,7 +10,7 @@ function setup() {
 
     game = new STTT({ x: 0, y: 0, size: min(width, height) });
     buttons = {
-        reset: new ImageButton("assets/reset.png", "assets/reset_hover.png", "Undo", width - 70, 20, 50, 50),
+        reset: new ImageButton("assets/reset.png", "assets/reset_hover.png", "Reset", width - 70, 20, 50, 50),
         undo: new ImageButton("assets/undo.png", "assets/undo_hover.png", "Undo", width - 150, 20, 50, 50),
         info: new ImageButton("assets/info.png", "assets/info_hover.png", "Info", width - 230, 20, 50, 50)
     }
